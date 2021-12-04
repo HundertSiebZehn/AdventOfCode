@@ -9,12 +9,16 @@ def main(args: List[str]):
     inputFile = args[0]
     if not path.exists(inputFile): 
         print(f"'{inputFile}' was not found.")
+        return
     
-    with open(inputFile, 'r') as file:
+    numbers = readInput(inputFile)
+    pairs = countIncreasingNeigbors(numbers)
+    print(f"increased pairs: {pairs}")
+
+def readInput(filePath: str)->List[int]:
+    with open(filePath, 'r') as file:
         content = file.readlines()
-        numbers = map(lambda s: int(s), content)
-        pairs = countIncreasingNeigbors(list(numbers))
-        print(f"increased pairs: {pairs}")
+        return list(map(lambda s: int(s), content))
 
 def countIncreasingNeigbors(list: list[int])-> int:
     count = 0
