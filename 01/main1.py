@@ -4,7 +4,7 @@ from os import path
 
 def main(args: List[str]):
     inputFile = getFilePathFromArgs(args)
-    numbers = readInput(inputFile)
+    numbers = readFileInput(inputFile)
     pairs = countIncreasingNeigbors(numbers)
     print(f"increased pairs: {pairs}")
 
@@ -17,7 +17,7 @@ def getFilePathFromArgs(args: List[str])->str:
     
     return inputFile
 
-def readInput(filePath: str)->List[int]:
+def readFileInput(filePath: str)->List[int]:
     with open(filePath, 'r') as file:
         content = file.readlines()
         return list(map(lambda s: int(s), content))
