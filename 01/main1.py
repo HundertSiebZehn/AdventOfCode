@@ -3,17 +3,19 @@ from typing import List
 from os import path
 
 def main(args: List[str]):
-    if len(args) != 1: 
-        print("input file not found.")
-        return
-    inputFile = args[0]
-    if not path.exists(inputFile): 
-        print(f"'{inputFile}' was not found.")
-        return
-    
+    inputFile = getFilePathFromArgs(args)
     numbers = readInput(inputFile)
     pairs = countIncreasingNeigbors(numbers)
     print(f"increased pairs: {pairs}")
+
+def getFilePathFromArgs(args: List[str])->str:
+    if len(args) != 1: 
+        raise ValueError("input file not found.")
+    inputFile = args[0]
+    if not path.exists(inputFile): 
+        raise ValueError(f"'{inputFile}' was not found.")
+    
+    return inputFile
 
 def readInput(filePath: str)->List[int]:
     with open(filePath, 'r') as file:
@@ -27,6 +29,5 @@ def countIncreasingNeigbors(list: list[int])-> int:
             count += 1
     return count
 
-
-if __name__ == '__main__': 
+if __name__ == '__main__':
     main(sys.argv[1:])
