@@ -24,7 +24,7 @@ def main(args: List[str]):
     for line in lines:
         vents.markLine(line)
     
-    print(f"at least {vents.score} points with overlapping lines")
+    print(f"{vents.score} points with overlapping lines")
 
 if __name__ == '__main__':
     main(sys.argv[1::])
