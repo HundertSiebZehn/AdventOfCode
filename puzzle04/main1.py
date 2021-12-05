@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import Optional, List, Union
 from os import path
 import sys
 import re
@@ -6,7 +6,7 @@ import re
 
 class BingoBoard():
     def __init__(self, lines: List[str]) -> None:
-        self.board = BingoBoard._parse(lines)
+        self.board: List[List[Union[int, None]]] = BingoBoard._parse(lines)
 
     @staticmethod
     def _parse(lines: List[str]) -> List[List[int]]:
@@ -19,18 +19,19 @@ class BingoBoard():
         for y, row in enumerate(self.board):
             for x, value in enumerate(row):
                 if value == called:
-                    self.board[y][x] = 0
+                    self.board[y][x] = None
         if self.isWon:
             return self._score(called)
         return None
 
     @property
     def isWon(self) -> bool:
-        return 0 in map(sum, self.board) or \
-            0 in map(sum, zip(*self.board))
+        countNones = lambda xs: len(list(filter(lambda x: x is None, xs)))
+        return 5 in map(countNones, self.board) or \
+            5 in map(countNones, zip(*self.board))
 
     def _score(self, called: int) -> int:
-        return sum(map(lambda row: sum(row), self.board)) * called
+        return sum(map(lambda row: sum(filter(None, row)), self.board)) * called
 
     def __repr__(self) -> str:
         return f"Board({repr(self.board)})"
@@ -61,6 +62,7 @@ def main(args: List[str]):
             if score:
                 print(f"score of board {i+1}: {score}")
                 return
+    raise AssertionError('nobody won')
 
 if __name__ == '__main__':
     main(sys.argv[1::])
