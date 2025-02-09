@@ -18,5 +18,5 @@ pub fn main() !u8 {
     }
     const puzzleNo = try std.fmt.parseInt(u8, args[1], 10);
     const partNo = try std.fmt.parseInt(u8, args[2], 10);
-    return lib.solve(puzzleNo, partNo);
+    return lib.solve(puzzleNo, partNo, false);
 }

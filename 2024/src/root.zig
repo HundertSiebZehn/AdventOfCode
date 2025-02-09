@@ -5,10 +5,11 @@ const stderr = std.io.getStdErr().writer();
 const mem = std.heap.page_allocator;
 const puzzle01 = @import("puzzle01.zig");
 
-pub fn solve(number: u8, part: u8) !u8 {
+pub fn solve(number: u8, part: u8, comptime isExample: bool) !u8 {
+    const fileName = try pickInputFile(number, part, isExample);
     switch (number) {
         1=> {
-            const left, const right = try parseDoubleInputlist("input/1.txt");
+            const left, const right = try parseDoubleColumnInputlist(fileName);
             const result = switch (part) {
                 1 => puzzle01.solve(left, right),
                 2 => puzzle01.solvePart2(left, right),
@@ -23,7 +24,23 @@ pub fn solve(number: u8, part: u8) !u8 {
     return 0;
 }
 
-fn parseDoubleInputlist(path: []const u8) !struct { []i32, []i32 } {
+fn pickInputFile(number: u8, part: u8, comptime isExample: bool) ![]u8 {
+    const len = if (isExample) 20 else 12;
+    _ = part;
+    var result: [len]u8 = undefined;
+    std.mem.copyForwards(u8, result[0..6], "input/");
+    _ = try std.fmt.bufPrint(result[6..8], "{d:0>2.0}", .{number});
+    if (isExample) {
+        std.mem.copyForwards(u8, result[8..20], ".example.txt");
+    } else {
+        std.mem.copyForwards(u8, result[8..12], ".txt");
+    }
+    // std.debug.print("path: {s}\n", .{result});
+
+    return &result;
+}
+
+fn parseDoubleColumnInputlist(path: []const u8) !struct { []i32, []i32 } {
     var file = try std.fs.cwd().openFile(path, .{});
     defer file.close();
     const content = try file.readToEndAlloc(mem, (try file.stat()).size);
@@ -58,4 +75,16 @@ fn parseLine(_numbers: std.mem.SplitIterator(u8, .sequence)) !struct { i32, i32 
     } else {
         @panic("No right value to parse");
     }
+}
+
+test "puzzle01" {
+    const fileName = try pickInputFile(1, 1, true);
+    const left, const right = try parseDoubleColumnInputlist(fileName);
+    try testing.expectEqual(11, puzzle01.solve(left, right));
+}
+
+test "puzzle01 part 2" {
+    const fileName = try pickInputFile(1, 2, true);
+    const left, const right = try parseDoubleColumnInputlist(fileName);
+    try testing.expectEqual(31, puzzle01.solvePart2(left, right));
 }
