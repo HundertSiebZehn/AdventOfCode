@@ -5,13 +5,17 @@ const stderr = std.io.getStdErr().writer();
 const mem = std.heap.page_allocator;
 const puzzle01 = @import("puzzle01.zig");
 
-pub fn solve(number: u8) !u8 {
+pub fn solve(number: u8, part: u8) !u8 {
     switch (number) {
-        1 => {
+        1=> {
             const left, const right = try parseDoubleInputlist("input/1.txt");
-            const dist = puzzle01.solve(left, right);
+            const result = switch (part) {
+                1 => puzzle01.solve(left, right),
+                2 => puzzle01.solvePart2(left, right),
+                else => @panic("no more parts"),
+            };
 
-            _ = try stdout.print("puzzle01:\t{}\n", .{dist});
+            _ = try stdout.print("puzzle01:\t{}\n", .{result});
         },
         else => {}
     }

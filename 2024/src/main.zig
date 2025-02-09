@@ -12,10 +12,11 @@ pub fn main() !u8 {
     //     //try std.fmt.format(stdout, "%s: %s\n", i, arg);
     //     try stdout.print("{d}: {s}\n", .{i , arg});
     // }
-    if (args[1..].len != 1) {
+    if (args[1..].len != 2) {
         try stderr.print("Missing argument\n", .{});
         return 1;
     }
     const puzzleNo = try std.fmt.parseInt(u8, args[1], 10);
-    return lib.solve(puzzleNo);
+    const partNo = try std.fmt.parseInt(u8, args[2], 10);
+    return lib.solve(puzzleNo, partNo);
 }
