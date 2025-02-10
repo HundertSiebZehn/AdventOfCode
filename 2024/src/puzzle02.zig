@@ -3,18 +3,29 @@ const ArrayList = std.ArrayList;
 const testing = std.testing;
 const stdout = std.io.getStdOut().writer();
 const stderr = std.io.getStdErr().writer();
-const mem = std.heap.page_allocator;
+const shared = @import("shared.zig");
+const PuzzleResult = shared.PuzzleResult;
+const readFile = shared.readFile;
+const pickInputFile = shared.pickInputFile;
 
 
-pub fn solve(reports: ArrayList(ArrayList(i32))) i32 {
+pub fn runPart1(allocator: std.mem.Allocator, comptime isExample: bool) !PuzzleResult {
+    const fileName = pickInputFile(1, 1, isExample);
+    const reports = try parseReports(allocator, fileName);
+    const result = solvePart1(reports);
+
+    return PuzzleResult{.int = result};
+}
+
+fn solvePart1(reports: ArrayList(ArrayList(i32))) i32 {
     var safeCount: i32 = 0;
     report: for (reports.items) |report| {
-        //std.debug.print("\nReport: ", .{});
+        std.debug.print("\nReport: ", .{});
         var previous = report.items[0];
         var previousDiff: ?i32 = null;
-        //std.debug.print("{d} ", .{previous});
+        std.debug.print("{d} ", .{previous});
         for (report.items[1..]) |current| {
-            //std.debug.print("{d} ", .{current});
+            std.debug.print("{d} ", .{current});
             const diff = previous - current;
             switch (@abs(diff)) {
                 0 => continue :report,
@@ -29,13 +40,35 @@ pub fn solve(reports: ArrayList(ArrayList(i32))) i32 {
             }
         }
         
-        //std.debug.print("Safe!\n", .{});
+        std.debug.print("Safe!\n", .{});
         safeCount += 1;
     }
 
     return safeCount;
 }
 
-pub fn solvePart2() void {
+fn solvePart2() void {
     
+}
+
+
+fn parseReports(allocator: std.mem.Allocator, path: []const u8) !ArrayList(ArrayList(i32)) {
+    const content = try readFile(path);
+    var reports = ArrayList(ArrayList(i32)).init(allocator);
+
+    var lines = std.mem.splitSequence(u8, content, "\n");
+    while(lines.next()) |line| {
+        const levels = @constCast(&std.mem.splitSequence(u8, line, " "));
+        var report = ArrayList(i32).init(allocator);
+        while (levels.next()) |level| {
+            if (std.mem.eql(u8, level, "")) continue; // skip empty
+            const parsed = try std.fmt.parseInt(i32, level, 10);
+            try report.append(parsed);
+            //std.debug.print("{d} ", .{parsed});
+        }
+        try reports.append(report);
+        // std.debug.print("\n", .{});
+    }
+
+    return reports;
 }
