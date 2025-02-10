@@ -10,7 +10,7 @@ const pickInputFile = shared.pickInputFile;
 
 
 pub fn runPart1(allocator: std.mem.Allocator, comptime isExample: bool) !PuzzleResult {
-    const fileName = pickInputFile(1, 1, isExample);
+    const fileName = pickInputFile(2, 1, isExample);
     const reports = try parseReports(allocator, fileName);
     const result = solvePart1(reports);
 
@@ -20,12 +20,12 @@ pub fn runPart1(allocator: std.mem.Allocator, comptime isExample: bool) !PuzzleR
 fn solvePart1(reports: ArrayList(ArrayList(i32))) i32 {
     var safeCount: i32 = 0;
     report: for (reports.items) |report| {
-        //std.debug.print("\nReport: ", .{});
+        // std.debug.print("\nReport: ", .{});
         var previous = report.items[0];
         var previousDiff: ?i32 = null;
-        //std.debug.print("{d} ", .{previous});
+        // std.debug.print("{d} ", .{previous});
         for (report.items[1..]) |current| {
-            //std.debug.print("{d} ", .{current});
+            // std.debug.print("{d} ", .{current});
             const diff = previous - current;
             switch (@abs(diff)) {
                 0 => continue :report,
@@ -40,7 +40,7 @@ fn solvePart1(reports: ArrayList(ArrayList(i32))) i32 {
             }
         }
         
-        //std.debug.print("Safe!\n", .{});
+        // std.debug.print("Safe!\n", .{});
         safeCount += 1;
     }
 
@@ -48,7 +48,7 @@ fn solvePart1(reports: ArrayList(ArrayList(i32))) i32 {
 }
 
 fn solvePart2() void {
-    
+    @panic("not implemented yet");
 }
 
 
@@ -61,10 +61,10 @@ fn parseReports(allocator: std.mem.Allocator, path: []const u8) !ArrayList(Array
         const levels = @constCast(&std.mem.splitSequence(u8, line, " "));
         var report = ArrayList(i32).init(allocator);
         while (levels.next()) |level| {
-            if (std.mem.eql(u8, level, "")) continue; // skip empty
+            if (level.len <= 0) continue; // skip empty
             const parsed = try std.fmt.parseInt(i32, level, 10);
             try report.append(parsed);
-            //std.debug.print("{d} ", .{parsed});
+            // std.debug.print("{d} ", .{parsed});
         }
         try reports.append(report);
         // std.debug.print("\n", .{});

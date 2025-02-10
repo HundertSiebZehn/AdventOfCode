@@ -32,6 +32,11 @@ pub fn solve(number: u8, part: u8) !void {
     }
 }
 
+const PuzzleSetup = struct {
+    number: u8,
+    part: u8,
+};
+
 test "puzzle 01 part1" {
     try testing.expectEqual(PuzzleResult{.int = 11}, puzzle01.runPart1(testing.allocator, true));
 }
