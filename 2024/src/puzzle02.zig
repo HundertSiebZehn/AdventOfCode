@@ -20,12 +20,12 @@ pub fn runPart1(allocator: std.mem.Allocator, comptime isExample: bool) !PuzzleR
 fn solvePart1(reports: ArrayList(ArrayList(i32))) i32 {
     var safeCount: i32 = 0;
     report: for (reports.items) |report| {
-        std.debug.print("\nReport: ", .{});
+        //std.debug.print("\nReport: ", .{});
         var previous = report.items[0];
         var previousDiff: ?i32 = null;
-        std.debug.print("{d} ", .{previous});
+        //std.debug.print("{d} ", .{previous});
         for (report.items[1..]) |current| {
-            std.debug.print("{d} ", .{current});
+            //std.debug.print("{d} ", .{current});
             const diff = previous - current;
             switch (@abs(diff)) {
                 0 => continue :report,
@@ -40,7 +40,7 @@ fn solvePart1(reports: ArrayList(ArrayList(i32))) i32 {
             }
         }
         
-        std.debug.print("Safe!\n", .{});
+        //std.debug.print("Safe!\n", .{});
         safeCount += 1;
     }
 

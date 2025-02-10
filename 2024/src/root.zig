@@ -14,8 +14,8 @@ const PuzzleResult = shared.PuzzleResult;
 pub fn solve(number: u8, part: u8) !void {
     const result = switch (number) {
         1=> switch (part) {
-                1 => puzzle01.runPart1(false),
-                2 => puzzle01.runPart2(false),
+                1 => puzzle01.runPart1(mem, false),
+                2 => puzzle01.runPart2(mem, false),
                 else => @panic("no more parts"),
             },
         2 => switch (part) {
@@ -33,11 +33,11 @@ pub fn solve(number: u8, part: u8) !void {
 }
 
 test "puzzle 01 part1" {
-    try testing.expectEqual(PuzzleResult{.int = 11}, puzzle01.runPart1(true));
+    try testing.expectEqual(PuzzleResult{.int = 11}, puzzle01.runPart1(testing.allocator, true));
 }
 
 test "puzzle 01 part 2" {
-    try testing.expectEqual(PuzzleResult{.int = 31}, puzzle01.runPart2(true));
+    try testing.expectEqual(PuzzleResult{.int = 31}, puzzle01.runPart2(testing.allocator, true));
 }
 
 test "puzzle02 part1" {

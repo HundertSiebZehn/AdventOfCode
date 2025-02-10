@@ -2,23 +2,27 @@ const std = @import("std");
 const testing = std.testing;
 const stdout = std.io.getStdOut().writer();
 const stderr = std.io.getStdErr().writer();
-const mem = std.heap.page_allocator;
 const shared = @import("shared.zig");
 const PuzzleResult = shared.PuzzleResult;
 const readFile = shared.readFile;
 const pickInputFile = shared.pickInputFile;
+const Allocator = std.mem.Allocator;
 
-pub fn runPart1(comptime isExample: bool) !PuzzleResult {
+pub fn runPart1(allocator: Allocator, comptime isExample: bool) !PuzzleResult {
     const fileName = pickInputFile(1, 1, isExample);
-    const left, const right = try parseDoubleColumnInputList(fileName);
+    const tuple = try parseDoubleColumnInputList(allocator, fileName);
+    const left = tuple.left;
+    const right = tuple.right;
     const result = solvePart1(left, right);
 
     return PuzzleResult{.int =  result};
 }
 
-pub fn runPart2(comptime isExample: bool) !PuzzleResult {
+pub fn runPart2(allocator: Allocator, comptime isExample: bool) !PuzzleResult {
     const fileName = pickInputFile(1, 1, isExample);
-    const left, const right = try parseDoubleColumnInputList(fileName);
+    const tuple = try parseDoubleColumnInputList(allocator, fileName);
+    const left = tuple.left;
+    const right = tuple.right;
     const result = solvePart2(left, right);
 
     return PuzzleResult{.int =  result};
@@ -50,27 +54,27 @@ fn solvePart2(left: []i32, right: []i32) i32 {
     return result;
 }
 
-fn parseDoubleColumnInputList(path: []const u8) !struct { []i32, []i32 } {
+fn parseDoubleColumnInputList(allocator: Allocator, path: []const u8) !Tuple([]i32) {
     const content = try readFile(path);
-    var left = std.ArrayList(i32).init(mem);
+    var left = std.ArrayList(i32).init(allocator);
     defer left.deinit();
-    var right = std.ArrayList(i32).init(mem);
+    var right = std.ArrayList(i32).init(allocator);
     defer right.deinit();
 
     var lines = std.mem.splitSequence(u8, content, "\n");
     while (lines.next()) |line| {
         const numbers = std.mem.splitSequence(u8, line, " ");
         const tuple = try parseDoubleColumnInputLine(numbers);
-        try left.append(tuple.@"0");
-        try right.append(tuple.@"1");
+        try left.append(tuple.left);
+        try right.append(tuple.right);
     }
-    return .{
-        try left.toOwnedSlice(),
-        try right.toOwnedSlice(),
+    return Tuple ([]i32) {
+        .left = try left.toOwnedSlice(),
+        .right = try right.toOwnedSlice(),
     };
 }
 
-fn parseDoubleColumnInputLine(_numbers: std.mem.SplitIterator(u8, .sequence)) !struct { i32, i32 } {
+fn parseDoubleColumnInputLine(_numbers: std.mem.SplitIterator(u8, .sequence)) !Tuple(i32) {
     var numbers = @constCast(&_numbers);
     var number = numbers.next().?;
     const left = try std.fmt.parseInt(i32, number, 10);
@@ -79,8 +83,18 @@ fn parseDoubleColumnInputLine(_numbers: std.mem.SplitIterator(u8, .sequence)) !s
         number = numbers.next().?;
         if (number.len <= 0) continue;
         const right = try std.fmt.parseInt(i32, number, 10);
-        return .{ left, right };
+        return Tuple(i32) {
+            .left=  left,
+            .right= right,
+        };
     } else {
         @panic("No right value to parse");
     }
+}
+
+fn Tuple(comptime T: type) type {
+    return struct {
+        left: T,
+        right: T,
+    };
 }
