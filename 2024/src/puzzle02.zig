@@ -18,8 +18,10 @@ pub fn runPart1(allocator: std.mem.Allocator, comptime isExample: bool) !PuzzleR
 }
 
 fn solvePart1(reports: ArrayList(ArrayList(i32))) i32 {
+    defer reports.deinit();
     var safeCount: i32 = 0;
     report: for (reports.items) |report| {
+        defer report.deinit();
         // std.debug.print("\nReport: ", .{});
         var previous = report.items[0];
         var previousDiff: ?i32 = null;
