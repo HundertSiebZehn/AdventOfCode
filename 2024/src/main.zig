@@ -4,7 +4,7 @@ const stderr = std.io.getStdErr().writer();
 const lib = @import("./root.zig");
 
 
-pub fn main() !u8 {
+pub fn main() !void {
     const allo = std.heap.page_allocator;
     const args = try std.process.argsAlloc(allo);
     defer std.process.argsFree(allo, args);
@@ -14,9 +14,9 @@ pub fn main() !u8 {
     // }
     if (args[1..].len != 2) {
         try stderr.print("Missing argument\n", .{});
-        return 1;
+        return;
     }
     const puzzleNo = try std.fmt.parseInt(u8, args[1], 10);
     const partNo = try std.fmt.parseInt(u8, args[2], 10);
-    return lib.solve(puzzleNo, partNo, false);
+    try lib.solve(puzzleNo, partNo);
 }

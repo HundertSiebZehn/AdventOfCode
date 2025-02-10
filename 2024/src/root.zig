@@ -14,12 +14,12 @@ const PuzzleResult = shared.PuzzleResult;
 pub fn solve(number: u8, part: u8) !void {
     const result = switch (number) {
         1=> switch (part) {
-                1 => puzzle01.runPart1(mem, false),
-                2 => puzzle01.runPart2(mem, false),
+                1 => try puzzle01.runPart1(mem, false),
+                2 => try puzzle01.runPart2(mem, false),
                 else => @panic("no more parts"),
             },
         2 => switch (part) {
-            1 => puzzle02.runPart1(false),
+            1 => try puzzle02.runPart1(mem, false),
             //2 => puzzle02.runPart2(false),
             else => @panic("no more parts"),
         },
@@ -27,7 +27,7 @@ pub fn solve(number: u8, part: u8) !void {
     };
     switch(result) {
         .int => |i|{
-            _ = try stdout.print("Result:\t{d}", .{i});
+            _ = try stdout.print("Solution:\t{d}\n", .{i});
         }
     }
 }

@@ -11,9 +11,9 @@ const Allocator = std.mem.Allocator;
 pub fn runPart1(allocator: Allocator, comptime isExample: bool) !PuzzleResult {
     const fileName = pickInputFile(1, 1, isExample);
     const tuple = try parseDoubleColumnInputList(allocator, fileName);
-    const left = tuple.left;
-    const right = tuple.right;
-    const result = solvePart1(left, right);
+    defer allocator.free(tuple.left);
+    defer allocator.free(tuple.right);
+    const result = solvePart1(tuple.left, tuple.right);
 
     return PuzzleResult{.int =  result};
 }
@@ -21,9 +21,9 @@ pub fn runPart1(allocator: Allocator, comptime isExample: bool) !PuzzleResult {
 pub fn runPart2(allocator: Allocator, comptime isExample: bool) !PuzzleResult {
     const fileName = pickInputFile(1, 1, isExample);
     const tuple = try parseDoubleColumnInputList(allocator, fileName);
-    const left = tuple.left;
-    const right = tuple.right;
-    const result = solvePart2(left, right);
+    defer allocator.free(tuple.left);
+    defer allocator.free(tuple.right);
+    const result = solvePart2(tuple.left, tuple.right);
 
     return PuzzleResult{.int =  result};
 }
