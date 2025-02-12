@@ -6,6 +6,7 @@ const stderr = std.io.getStdErr().writer();
 const mem = std.heap.page_allocator;
 const puzzle01 = @import("puzzle01.zig");
 const puzzle02 = @import("puzzle02.zig");
+const puzzle03 = @import("puzzle03.zig");
 const shared = @import("shared.zig");
 const pickInputFile = shared.pickInputFile;
 const PuzzleResult = shared.PuzzleResult;
@@ -23,6 +24,10 @@ pub fn solve(number: u8, part: u8) !void {
             2 => try puzzle02.runPart2(mem, false),
             else => @panic("no more parts"),
         }, 
+        3 => switch (part) {
+            1 => try puzzle03.runPart1(mem, false),
+            else => @panic("no more parts"),
+        },
         else => @panic("not implemented yet"),
     };
     switch(result) {
@@ -51,4 +56,8 @@ test "puzzle 02 part 1" {
 
 test "puzzle 02 part 2" {
     try testing.expectEqual(PuzzleResult{.int = 4}, puzzle02.runPart2(testing.allocator, true));
+}
+
+test "puzzle 03 part 1" {
+    try testing.expectEqual(PuzzleResult{.int = 161}, puzzle03.runPart1(testing.allocator, true));
 }
