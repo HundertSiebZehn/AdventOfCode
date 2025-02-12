@@ -1,8 +1,8 @@
-run: build
-	@./zig-out/bin/aoc $(ARGS)
+run: build test
+	@zig build run -- $(ARGS)
 
-build: test
+build:
 	@zig build -freference-trace
 
-test: 
-	@zig test src/root.zig
+test: build
+	@zig build test
