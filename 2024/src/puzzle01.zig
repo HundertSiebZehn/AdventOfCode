@@ -9,7 +9,7 @@ const pickInputFile = shared.pickInputFile;
 const Allocator = std.mem.Allocator;
 
 pub fn runPart1(allocator: Allocator, comptime isExample: bool) !PuzzleResult {
-    const fileName = pickInputFile(1, 1, isExample);
+    const fileName = pickInputFile(1, null, isExample);
     const tuple = try parseDoubleColumnInputList(allocator, fileName);
     defer allocator.free(tuple.left);
     defer allocator.free(tuple.right);
@@ -19,7 +19,7 @@ pub fn runPart1(allocator: Allocator, comptime isExample: bool) !PuzzleResult {
 }
 
 pub fn runPart2(allocator: Allocator, comptime isExample: bool) !PuzzleResult {
-    const fileName = pickInputFile(1, 1, isExample);
+    const fileName = pickInputFile(1, null, isExample);
     const tuple = try parseDoubleColumnInputList(allocator, fileName);
     defer allocator.free(tuple.left);
     defer allocator.free(tuple.right);

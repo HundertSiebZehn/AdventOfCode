@@ -9,7 +9,7 @@ const readFile = shared.readFile;
 const pickInputFile = shared.pickInputFile;
 
 pub fn runPart1(allocator: std.mem.Allocator, comptime isExample: bool) !PuzzleResult {
-    const fileName = pickInputFile(2, 1, isExample);
+    const fileName = pickInputFile(2, null, isExample);
     const reports = try parseReports(allocator, fileName);
     const result = solvePart1(reports);
 
@@ -17,7 +17,7 @@ pub fn runPart1(allocator: std.mem.Allocator, comptime isExample: bool) !PuzzleR
 }
 
 pub fn runPart2(allocator: std.mem.Allocator, comptime isExample: bool) !PuzzleResult {
-    const fileName = pickInputFile(2, 2, isExample);
+    const fileName = pickInputFile(2, null, isExample);
     const reports = try parseReports(allocator, fileName);
     const result = solvePart2(reports);
 

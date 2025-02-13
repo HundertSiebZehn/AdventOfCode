@@ -26,6 +26,7 @@ pub fn solve(number: u8, part: u8) !void {
         }, 
         3 => switch (part) {
             1 => try puzzle03.runPart1(mem, false),
+            2 => try puzzle03.runPart2(mem, false),
             else => @panic("no more parts"),
         },
         else => @panic("not implemented yet"),
@@ -60,4 +61,8 @@ test "puzzle 02 part 2" {
 
 test "puzzle 03 part 1" {
     try testing.expectEqual(PuzzleResult{.int = 161}, puzzle03.runPart1(testing.allocator, true));
+}
+
+test "puzzle 03 part 2" {
+    try testing.expectEqual(PuzzleResult{.int= 48}, puzzle03.runPart2(testing.allocator, true));
 }
