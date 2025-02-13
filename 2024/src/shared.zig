@@ -1,9 +1,6 @@
 const std = @import("std");
 const ArrayList = std.ArrayList;
-const testing = std.testing;
-const stdout = std.io.getStdOut().writer();
-const stderr = std.io.getStdErr().writer();
-const mem = std.heap.page_allocator;
+const Allocator = std.mem.Allocator;
 
 pub const PuzzleResult = union(enum) { int: i32 };
 
@@ -34,16 +31,8 @@ pub fn pickInputFile(number: u8, part: ?u8, isExample: bool) []u8 {
     return result[0..len];
 }
 
-pub fn readFile(path: []const u8) ![]u8 {
-    var file = std.fs.cwd().openFile(path, .{}) catch |err| {
-        switch (err) {
-            std.fs.File.OpenError.FileNotFound => {
-                _ = try stderr.print("File '{s}' was not found!", .{path});
-                return err;
-            },
-            else => return err,
-        }
-    };
+pub fn readFile(allocator: Allocator, path: []const u8) ![]u8 {
+    var file = try std.fs.cwd().openFile(path, .{});
     defer file.close();
-    return try file.readToEndAlloc(mem, (try file.stat()).size);
+    return try file.readToEndAlloc(allocator, (try file.stat()).size);
 }

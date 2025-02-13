@@ -106,7 +106,8 @@ fn isSafe(report: ArrayList(i32)) bool {
 }
 
 fn parseReports(allocator: std.mem.Allocator, path: []const u8) !ArrayList(ArrayList(i32)) {
-    const content = try readFile(path);
+    const content = try readFile(allocator, path);
+    defer allocator.free(content);
     var reports = ArrayList(ArrayList(i32)).init(allocator);
 
     var lines = std.mem.splitSequence(u8, content, "\n");

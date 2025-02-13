@@ -10,18 +10,18 @@ const pickInputFile = shared.pickInputFile;
 const Allocator = std.mem.Allocator;
 
 pub fn runPart1(allocator: Allocator, comptime isExample: bool) !PuzzleResult {
-    _ = allocator;
     const fileName = pickInputFile(3, if (isExample) 1 else null, isExample);
-    const content = readFile(fileName) catch unreachable;
+    const content = readFile(allocator, fileName) catch unreachable;
+    defer allocator.free(content);
 
     const result = try solvePart1(content);
     return PuzzleResult{ .int = result };
 }
 
 pub fn runPart2(allocator: Allocator, comptime isExample: bool) !PuzzleResult {
-    _ = allocator;
     const fileName = pickInputFile(3, if (isExample) 2 else null, isExample);
-    const content = readFile(fileName) catch unreachable;
+    const content = readFile(allocator, fileName) catch unreachable;
+    defer allocator.free(content);
 
     const result = try solvePart2(content);
     return PuzzleResult{ .int = result };

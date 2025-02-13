@@ -1,7 +1,5 @@
 const std = @import("std");
 const testing = std.testing;
-const stdout = std.io.getStdOut().writer();
-const stderr = std.io.getStdErr().writer();
 const shared = @import("shared.zig");
 const PuzzleResult = shared.PuzzleResult;
 const readFile = shared.readFile;
@@ -55,7 +53,8 @@ fn solvePart2(left: []i32, right: []i32) i32 {
 }
 
 fn parseDoubleColumnInputList(allocator: Allocator, path: []const u8) !Tuple([]i32) {
-    const content = try readFile(path);
+    const content = try readFile(allocator, path);
+    defer allocator.free(content);
     var left = std.ArrayList(i32).init(allocator);
     defer left.deinit();
     var right = std.ArrayList(i32).init(allocator);
