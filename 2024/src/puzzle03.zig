@@ -73,23 +73,15 @@ fn solvePart1(input: []u8) !i32 {
             '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' => {
                 switch (state) {
                     State.LEFT_NUMBER => {
-                        if (i < 3) {
-                            left[i] = current;
-                            i += 1;
-                            if (i >= 3) state = State.COMMA;
-                        } else {
-                            state = State.M;
-                        }
+                        left[i] = current;
+                        i += 1;
+                        if (i >= 3) state = State.COMMA;
                         std.log.debug("current left: {s} in state {s}", .{ left, @tagName(state) });
                     },
                     State.RIGHT_NUMBER => {
-                        if (j < 3) {
-                            right[j] = current;
-                            j += 1;
-                            if (j >= 3) state = State.CLOSE_BRACKET;
-                        } else {
-                            state = State.COMMA;
-                        }
+                        right[j] = current;
+                        j += 1;
+                        if (j >= 3) state = State.CLOSE_BRACKET;
                         std.log.debug("current right: {s} in state {s}", .{ right, @tagName(state) });
                     },
                     else => {
@@ -176,29 +168,21 @@ fn solvePart2(input: []u8) !i32 {
                     },
                     else => {
                         state = State2.M_OR_D;
-                    }
+                    },
                 }
             },
             '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' => {
                 switch (state) {
                     State2.LEFT_NUMBER => {
-                        if (i < 3) {
-                            left[i] = current;
-                            i += 1;
-                            if (i >= 3) state = State2.COMMA;
-                        } else {
-                            state = State2.M_OR_D;
-                        }
+                        left[i] = current;
+                        i += 1;
+                        if (i >= 3) state = State2.COMMA;
                         std.log.debug("current left: {s} in state {s}", .{ left, @tagName(state) });
                     },
                     State2.RIGHT_NUMBER => {
-                        if (j < 3) {
-                            right[j] = current;
-                            j += 1;
-                            if (j >= 3) state = State2.MUL_CLOSE_BRACKET;
-                        } else {
-                            state = State2.COMMA;
-                        }
+                        right[j] = current;
+                        j += 1;
+                        if (j >= 3) state = State2.MUL_CLOSE_BRACKET;
                         std.log.debug("current right: {s} in state {s}", .{ right, @tagName(state) });
                     },
                     else => {
@@ -236,7 +220,7 @@ fn solvePart2(input: []u8) !i32 {
                     },
                     else => {
                         state = State2.M_OR_D;
-                    }
+                    },
                 }
                 state = State2.M_OR_D;
             },
@@ -257,7 +241,7 @@ fn solvePart2(input: []u8) !i32 {
             'n' => {
                 if (state == State2.DO_OPEN_BRACKET_OR_DON) {
                     state = State2.DON_;
-                }else {
+                } else {
                     state = State2.M_OR_D;
                 }
             },
