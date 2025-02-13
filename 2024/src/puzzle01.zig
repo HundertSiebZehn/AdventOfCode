@@ -15,7 +15,7 @@ pub fn runPart1(allocator: Allocator, comptime isExample: bool) !PuzzleResult {
     defer allocator.free(tuple.right);
     const result = solvePart1(tuple.left, tuple.right);
 
-    return PuzzleResult{.int =  result};
+    return PuzzleResult{ .int = result };
 }
 
 pub fn runPart2(allocator: Allocator, comptime isExample: bool) !PuzzleResult {
@@ -25,7 +25,7 @@ pub fn runPart2(allocator: Allocator, comptime isExample: bool) !PuzzleResult {
     defer allocator.free(tuple.right);
     const result = solvePart2(tuple.left, tuple.right);
 
-    return PuzzleResult{.int =  result};
+    return PuzzleResult{ .int = result };
 }
 
 fn solvePart1(left: []i32, right: []i32) i32 {
@@ -46,7 +46,7 @@ fn solvePart2(left: []i32, right: []i32) i32 {
         var count: i32 = 0;
         for (right) |r| {
             if (l == r) {
-                count +=1;
+                count += 1;
             }
         }
         result += l * count;
@@ -68,7 +68,7 @@ fn parseDoubleColumnInputList(allocator: Allocator, path: []const u8) !Tuple([]i
         try left.append(tuple.left);
         try right.append(tuple.right);
     }
-    return Tuple ([]i32) {
+    return Tuple([]i32){
         .left = try left.toOwnedSlice(),
         .right = try right.toOwnedSlice(),
     };
@@ -83,9 +83,9 @@ fn parseDoubleColumnInputLine(_numbers: std.mem.SplitIterator(u8, .sequence)) !T
         number = numbers.next().?;
         if (number.len <= 0) continue;
         const right = try std.fmt.parseInt(i32, number, 10);
-        return Tuple(i32) {
-            .left=  left,
-            .right= right,
+        return Tuple(i32){
+            .left = left,
+            .right = right,
         };
     } else {
         @panic("No right value to parse");

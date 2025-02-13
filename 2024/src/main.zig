@@ -3,7 +3,6 @@ const stdout = std.io.getStdOut().writer();
 const stderr = std.io.getStdErr().writer();
 const lib = @import("./root.zig");
 
-
 pub fn main() !void {
     const allo = std.heap.page_allocator;
     const args = try std.process.argsAlloc(allo);

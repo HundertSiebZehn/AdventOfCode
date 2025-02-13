@@ -5,9 +5,7 @@ const stdout = std.io.getStdOut().writer();
 const stderr = std.io.getStdErr().writer();
 const mem = std.heap.page_allocator;
 
-pub const PuzzleResult = union(enum) {
-    int: i32
-};
+pub const PuzzleResult = union(enum) { int: i32 };
 
 pub fn pickInputFile(number: u8, part: ?u8, isExample: bool) []u8 {
     var len = if (isExample) @as(usize, 20) else @as(usize, 12);
@@ -17,7 +15,7 @@ pub fn pickInputFile(number: u8, part: ?u8, isExample: bool) []u8 {
     _ = std.fmt.bufPrint(result[6..8], "{d:0>2.0}", .{number}) catch unreachable;
     if (isExample) {
         std.mem.copyForwards(u8, result[8..16], ".example");
-        if (part != null){
+        if (part != null) {
             _ = std.fmt.bufPrint(result[16..18], "_{d:1}", .{part.?}) catch unreachable;
             std.mem.copyForwards(u8, result[18..22], ".txt");
         } else {
